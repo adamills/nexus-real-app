@@ -1,55 +1,95 @@
-<!DOCTYPE html><html lang="en" class="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>MDR TradeX - Global Trading Platform</title><link rel="icon" type="image/png" href="mdr-icon.png"><script src="https://cdn.tailwindcss.com"></script><script>tailwind.config={darkMode:'class',theme:{extend:{colors:{binanceDark:'#0B0E11',binanceGray:'#181A20',binanceBorder:'#2B3139',binanceYellow:'#FCD535',binanceGreen:'#0ECB81',binanceRed:'#F6465D',metaMaskOrange:'#E17726',mdrGold:'#D4AF37'}}}}</script><script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#2B3139;border-radius:2px}.pb-safe{padding-bottom:env(safe-area-inset-bottom)}</style></head><body class="bg-binanceDark text-gray-200 font-sans antialiased h-screen flex flex-col overflow-hidden"><div id="toast-container" class="fixed top-[72px] right-4 z-[100] flex flex-col gap-2 pointer-events-none"></div><header class="bg-binanceGray border-b border-binanceBorder shrink-0 z-40"><div class="h-14 flex items-center justify-between px-3"><div class="flex items-center gap-2"><img src="mdr-icon.png" class="w-9 h-9 rounded-xl bg-black p-0.5 border border-mdrGold/30"><div><div class="font-black text-[14px] tracking-wide"><span class="text-mdrGold">MDR</span><span class="text-white"> TradeX</span></div><div class="text-[8px] text-gray-400 -mt-1 tracking-[0.2em]">GLOBAL TRADING PLATFORM</div></div><span class="text-[9px] bg-binanceGreen/20 text-binanceGreen px-1.5 py-0.5 rounded ml-2">● LIVE REAL WALLET</span></div><div class="flex gap-2"><button onclick="document.getElementById('ai-modal').classList.remove('hidden')" class="px-2.5 py-1.5 bg-mdrGold/10 border border-mdrGold/30 text-mdrGold rounded-lg text-[11px] font-bold"><i class="fa-solid fa-robot"></i> AI</button><button id="wallet-btn" onclick="openWalletModal()" class="px-3 py-1.5 bg-metaMaskOrange text-white rounded-lg text-[11px] font-bold flex items-center gap-1.5"><i class="fa-solid fa-wallet"></i><span id="wallet-text">Connect Real Wallet</span></button></div></div><nav class="flex overflow-x-auto text-[11px] font-bold border-t border-binanceBorder/50 bg-binanceDark px-2"><button onclick="switchNav('trade')" id="nav-trade" class="px-3 py-2.5 text-binanceYellow border-b-2 border-binanceYellow">Trade</button><button onclick="switchNav('earn')" id="nav-earn" class="px-3 py-2.5 text-gray-400">Earn</button><button onclick="switchNav('admin')" id="nav-admin" class="px-3 py-2.5 text-binanceRed"><i class="fa-solid fa-shield-halved mr-1"></i>Admin</button><button onclick="switchNav('auth')" id="nav-auth" class="px-3 py-2.5 text-gray-400">Auth</button></nav></header><main class="flex-1 flex flex-col lg:flex-row overflow-hidden"><div id="view-trade" class="flex-1 flex flex-col lg:flex-row overflow-hidden"><div class="flex-1 flex flex-col border-b lg:border-r border-binanceBorder min-h-[360px]"><div class="h-12 bg-binanceDark border-b border-binanceBorder flex items-center justify-between px-3 text-[11px]"><div class="flex items-center gap-3"><div class="flex items-center gap-1.5"><div class="w-5 h-5 rounded-full bg-[#F7931A] flex items-center justify-center text-[10px] font-black text-white">₿</div><span class="font-bold text-white">BTC/USDT</span><span class="bg-mdrGold/20 text-mdrGold px-1.5 py-0.5 rounded text-[9px]">MDR • 50x</span></div><span id="ticker-price" class="font-mono font-bold text-binanceGreen">$67,284.50</span><span id="funding" class="text-mdrGold">+0.0100%</span></div></div><div id="chart-wrap" class="flex-1 bg-binanceDark relative"><canvas id="chartCanvas" class="absolute inset-0 w-full h-full"></canvas><div class="absolute top-2 left-2 text-[10px] bg-binanceGray border border-binanceBorder px-2 py-0.5 rounded">MDR Live • Real History</div><img src="mdr-logo.png" class="absolute bottom-2 right-2 w-24 opacity-20 pointer-events-none"></div></div><div class="w-full lg:w-[340px] bg-binanceGray flex flex-col p-3 space-y-3 overflow-y-auto pb-[90px] lg:pb-3"><div><label class="text-[11px] text-gray-400">Price (USDT)</label><input id="trade-price" value="67284.50" class="w-full mt-1 h-11 bg-binanceDark border border-binanceBorder rounded-xl px-3 font-mono text-white focus:outline-none focus:border-mdrGold"></div><div><label class="text-[11px] text-gray-400">Size (USDT)</label><input id="trade-amount" value="100" class="w-full mt-1 h-11 bg-binanceDark border border-binanceBorder rounded-xl px-3 font-mono text-white focus:outline-none focus:border-mdrGold"><div class="grid grid-cols-4 gap-1.5 mt-2"><button onclick="document.getElementById('trade-amount').value='25'" class="h-7 bg-binanceDark border border-binanceBorder rounded-lg text-[11px]">25%</button><button onclick="document.getElementById('trade-amount').value='50'" class="h-7 bg-binanceDark border border-binanceBorder rounded-lg text-[11px]">50%</button><button onclick="document.getElementById('trade-amount').value='75'" class="h-7 bg-binanceDark border border-binanceBorder rounded-lg text-[11px]">75%</button><button onclick="document.getElementById('trade-amount').value='100'" class="h-7 bg-binanceDark border border-binanceBorder rounded-lg text-[11px]">100%</button></div></div><div class="rounded-xl bg-binanceDark border border-binanceBorder p-3"><div class="flex justify-between items-center mb-2"><span class="text-[11px] text-gray-400">MDR Real Wallet</span><span id="wallet-net" class="text-[10px] bg-binanceGray px-1.5 py-0.5 rounded">Not Connected</span></div><div id="wallet-connected" class="hidden space-y-2"><div class="font-mono text-[11px] break-all bg-binanceGray p-2 rounded-lg" id="wallet-addr"></div><div class="grid grid-cols-2 gap-2"><div class="bg-binanceGray rounded-lg p-2"><div class="text-[10px] text-gray-400">ETH Balance (Real)</div><div id="bal-eth" class="font-bold font-mono text-sm">0.00</div></div><div class="bg-binanceGray rounded-lg p-2"><div class="text-[10px] text-gray-400">Chain ID</div><div id="bal-chain" class="font-bold text-sm">-</div></div></div><button onclick="disconnectWallet()" class="w-full h-9 bg-binanceGray border border-binanceBorder rounded-xl text-[11px]">Disconnect</button></div><div id="wallet-disconnected"><button onclick="openWalletModal()" class="w-full h-11 bg-metaMaskOrange text-white rounded-xl font-bold text-sm">🦊 Connect Real Wallet</button><div class="mt-2 text-[10px] text-gray-400 text-center">MetaMask • Trust • WalletConnect • Real eth_sendTransaction</div></div></div><div class="grid grid-cols-2 gap-2"><button onclick="executeTrade('LONG')" class="h-[48px] bg-binanceGreen text-black rounded-xl font-bold text-[13px]">Buy / Long REAL</button><button onclick="executeTrade('SHORT')" class="h-[48px] bg-binanceRed text-white rounded-xl font-bold text-[13px]">Sell / Short REAL</button></div><div class="text-[10px] text-gray-500 text-center">MDR TradeX • Real signing • 0.0001 ETH proof</div></div></div></div><div id="view-auth" class="hidden flex-1 bg-binanceDark flex items-center justify-center p-4 overflow-y-auto"><div class="w-full max-w-[380px] bg-binanceGray border border-binanceBorder rounded-[20px] p-6 space-y-4"><img src="mdr-logo.png" class="w-48 mx-auto"><h2 class="text-xl font-bold text-white text-center">MDR TradeX</h2><p class="text-[11px] text-center text-gray-400">GLOBAL TRADING PLATFORM • TRADE WITH TRUST</p><div class="space-y-3"><input id="signin-email" placeholder="Email (admin@nexus.pro)" class="w-full h-11 bg-binanceDark border border-binanceBorder rounded-xl px-3 text-sm text-white"><input id="signin-pass" type="password" placeholder="Password admin123" class="w-full h-11 bg-binanceDark border border-binanceBorder rounded-xl px-3 text-sm text-white"><button onclick="handleSignin()" class="w-full h-11 bg-mdrGold text-black rounded-xl font-bold">Sign In - admin@nexus.pro / admin123</button><div class="text-center text-[11px] text-gray-400">or</div><button onclick="openWalletModal()" class="w-full h-11 bg-binanceDark border border-binanceBorder rounded-xl font-bold text-sm">🦊 Connect Wallet to Sign In</button></div></div></div><div id="view-earn" class="hidden flex-1 p-4 bg-binanceDark overflow-y-auto pb-[90px]"><h1 class="text-lg font-bold text-white flex items-center gap-2"><img src="mdr-icon.png" class="w-6 h-6 rounded"> MDR Earn • 12.5% APY</h1><div class="mt-3 bg-binanceGray border border-binanceBorder rounded-2xl p-4 flex justify-between items-center"><div class="flex items-center gap-2"><div class="w-8 h-8 rounded-full bg-[#26A17B] flex items-center justify-center text-white font-bold text-xs">₮</div><div><div class="font-bold text-white text-sm">USDT Vault</div><div class="text-[11px] text-gray-400">Flexible • Real wallet stake</div></div></div><button onclick="executeTrade('STAKE')" class="px-3 py-1.5 bg-mdrGold text-black rounded-lg text-[11px] font-bold">Stake Real</button></div></div><div id="view-admin" class="hidden flex-1 p-4 bg-binanceDark overflow-y-auto pb-[90px]"><div class="max-w-5xl mx-auto"><div class="flex items-center gap-3"><img src="mdr-logo.png" class="w-32"><h1 class="text-lg font-bold text-binanceRed">MDR Admin</h1></div><p class="text-[11px] text-gray-400 mt-1">Access: admin@nexus.pro / admin123 or URL?admin=1</p><div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-3"><div class="bg-binanceGray border border-binanceBorder rounded-xl p-3"><div class="text-[11px] text-gray-400">Total Users</div><div class="font-bold">1,248</div></div><div class="bg-binanceGray border border-binanceBorder rounded-xl p-3"><div class="text-[11px] text-gray-400">Volume 24h</div><div class="font-bold">$2.4M</div></div><div class="bg-binanceGray border border-binanceBorder rounded-xl p-3"><div class="text-[11px] text-gray-400">Open Positions</div><div class="font-bold">342</div></div><div class="bg-binanceGray border border-binanceBorder rounded-xl p-3"><div class="text-[11px] text-gray-400">Pending</div><div class="font-bold text-binanceYellow">12</div></div></div></div></div></main><div class="lg:hidden fixed bottom-0 left-0 right-0 h-[68px] bg-binanceGray/95 backdrop-blur border-t border-binanceBorder flex justify-around items-center z-40 pb-safe"><button onclick="switchNav('trade')" class="flex flex-col items-center gap-1 text-binanceYellow"><i class="fa-solid fa-chart-candlestick"></i><span class="text-[10px]">Trade</span></button><button onclick="switchNav('earn')" class="flex flex-col items-center gap-1 text-gray-400"><i class="fa-solid fa-piggy-bank"></i><span class="text-[10px]">Earn</span></button><button onclick="switchNav('admin')" class="flex flex-col items-center gap-1 text-binanceRed"><i class="fa-solid fa-shield-halved"></i><span class="text-[10px]">Admin</span></button><button onclick="switchNav('auth')" class="flex flex-col items-center gap-1 text-gray-400"><i class="fa-solid fa-user"></i><span class="text-[10px]">Auth</span></button></div><div id="wallet-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur z-[60] flex items-end lg:items-center justify-center"><div class="w-full lg:max-w-[380px] bg-binanceGray border border-binanceBorder lg:rounded-[20px] rounded-t-[20px] p-5 space-y-4 pb-safe"><div class="flex justify-between items-center"><div class="flex items-center gap-2"><img src="mdr-icon.png" class="w-7 h-7 rounded-lg"><h3 class="font-bold text-white">MDR TradeX - Real Wallet</h3></div><button onclick="closeWalletModal()" class="w-8 h-8 rounded-full bg-binanceDark flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div><button onclick="connectWallet()" class="w-full h-14 bg-[#1A1A1A] border border-binanceBorder rounded-xl flex items-center gap-3 px-4"><img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" class="w-8 h-8"><div class="text-left"><div class="font-bold text-sm text-white">MetaMask - Real</div><div class="text-[11px] text-gray-400">eth_requestAccounts + sendTransaction</div></div></button><button onclick="connectWalletConnect()" class="w-full h-14 bg-[#0B0E11] border border-binanceBorder rounded-xl flex items-center gap-3 px-4"><div class="w-8 h-8 rounded-full bg-[#3B99FC] flex items-center justify-center text-white font-bold">W</div><div class="text-left"><div class="font-bold text-sm">WalletConnect QR</div><div class="text-[11px] text-gray-400">Trust • 300+ wallets</div></div></button><div id="wallet-qr" class="hidden bg-white rounded-xl p-3 text-center"><img id="qr-img" src="" class="w-[200px] h-[200px] mx-auto rounded-lg"></div><div id="wallet-error" class="hidden p-2 bg-binanceRed/20 border border-binanceRed/30 rounded-xl text-[11px] text-binanceRed"></div></div></div><div id="ai-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur z-[60] flex items-end lg:items-center justify-center p-0 lg:p-4"><div class="w-full lg:max-w-[480px] bg-binanceGray border border-binanceBorder lg:rounded-[20px] rounded-t-[24px] p-5 space-y-3"><h3 class="font-bold text-white flex items-center gap-2"><img src="mdr-icon.png" class="w-6 h-6 rounded"> MDR AI Copilot</h3><textarea id="ai-input" rows="3" placeholder="Open 10x long on BTC with 500 USDT" class="w-full bg-binanceDark border border-binanceBorder rounded-xl p-3 text-sm text-white"></textarea><button onclick="parseAI()" class="w-full h-11 bg-mdrGold text-black rounded-xl font-bold text-sm">Parse & Execute with Real Wallet</button><div id="ai-out" class="hidden p-3 bg-binanceDark border border-binanceBorder rounded-xl text-xs font-mono text-binanceYellow"></div></div></div><script>
-let provider,signer,userAddr=null,liveCandles=[],viewScale=1,viewOffset=0;
-const API_BASE=(()=>{const o=window.location.origin; if(o.includes('192.168')||o.includes('localhost')||o.includes('127.0.0.1')) return localStorage.getItem('nexus_server')||'http://192.168.100.16:5000'; return o;})();
-function showToast(m,t='info'){const c=document.getElementById('toast-container');const d=document.createElement('div');d.className='px-3 py-2 bg-binanceGray border-l-4 '+(t==='success'?'border-binanceGreen text-binanceGreen':'border-binanceYellow text-binanceYellow')+' rounded-xl shadow-2xl text-xs font-bold pointer-events-auto';d.innerText=m;c.appendChild(d);setTimeout(()=>d.remove(),3000);}
-function switchNav(id){['trade','earn','admin','auth'].forEach(n=>{const el=document.getElementById('view-'+n); if(el) el.classList.add('hidden'); const nav=document.getElementById('nav-'+n); if(nav) nav.className='px-3 py-2.5 text-gray-400';}); const v=document.getElementById('view-'+id); if(v) v.classList.remove('hidden'); const nav=document.getElementById('nav-'+id); if(nav) nav.className='px-3 py-2.5 text-binanceYellow border-b-2 border-binanceYellow'; if(id==='trade') setTimeout(()=>{fetchHistory();},100);}
-function openWalletModal(){document.getElementById('wallet-modal').classList.remove('hidden');}
-function closeWalletModal(){document.getElementById('wallet-modal').classList.add('hidden'); document.getElementById('wallet-qr').classList.add('hidden');}
-async function connectWallet(){
- const errEl=document.getElementById('wallet-error'); if(errEl) errEl.classList.add('hidden');
- try{
-   if(!window.ethereum){
-     if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
-       window.location.href='https://metamask.app.link/dapp/'+window.location.host+'/enterprise-mdr';
-       showToast('Opening MetaMask app...','info'); return;
-     }
-     throw new Error('MetaMask not installed - get it at metamask.io');
-   }
-   showToast('Requesting MDR real wallet...','info');
-   const prov=new ethers.providers.Web3Provider(window.ethereum,'any');
-   await prov.send('eth_requestAccounts',[]);
-   const s=prov.getSigner(); const addr=await s.getAddress(); const net=await prov.getNetwork(); const bal=await prov.getBalance(addr);
-   const ethBal=ethers.utils.formatEther(bal);
-   provider=prov; signer=s; userAddr=addr;
-   document.getElementById('wallet-text').innerText=addr.slice(0,4)+'...'+addr.slice(-4);
-   document.getElementById('wallet-addr').innerText=addr;
-   document.getElementById('bal-eth').innerText=parseFloat(ethBal).toFixed(4)+' ETH';
-   document.getElementById('bal-chain').innerText=net.chainId;
-   document.getElementById('wallet-net').innerText='Chain '+net.chainId+' • '+parseFloat(ethBal).toFixed(4)+' ETH';
-   document.getElementById('wallet-net').className='text-[10px] bg-binanceGreen/20 text-binanceGreen px-1.5 py-0.5 rounded';
-   document.getElementById('wallet-connected').classList.remove('hidden');
-   document.getElementById('wallet-disconnected').classList.add('hidden');
-   document.getElementById('wallet-btn').className='px-3 py-1.5 bg-binanceGreen text-black rounded-lg text-[11px] font-bold flex items-center gap-1.5';
-   localStorage.setItem('nexus_wallet', JSON.stringify({address:addr, chainId:net.chainId, eth:ethBal}));
-   closeWalletModal();
-   showToast('MDR wallet: '+addr.slice(0,6)+'... Chain:'+net.chainId+' Bal:'+parseFloat(ethBal).toFixed(4),'success');
-   window.ethereum.on('accountsChanged', a=>{ if(a.length==0) location.reload(); });
-   window.ethereum.on('chainChanged', ()=>location.reload());
- }catch(e){ if(errEl){ errEl.innerText=e.message; errEl.classList.remove('hidden'); } showToast('Wallet error: '+e.message,'info'); }
-}
-function disconnectWallet(){ provider=null; signer=null; userAddr=null; localStorage.removeItem('nexus_wallet'); document.getElementById('wallet-text').innerText='Connect Real Wallet'; document.getElementById('wallet-connected').classList.add('hidden'); document.getElementById('wallet-disconnected').classList.remove('hidden'); document.getElementById('wallet-net').innerText='Not Connected'; showToast('Disconnected','info'); }
-async function executeTrade(side){
- if(!signer||!userAddr){ showToast('Connect REAL wallet first!','info'); openWalletModal(); return; }
- const amt=document.getElementById('trade-amount')?.value||'100'; const price=document.getElementById('trade-price')?.value||'0';
- try{ showToast('Signing MDR REAL tx... Check MetaMask','info'); const tx=await signer.sendTransaction({to:userAddr, value:ethers.utils.parseEther('0.0001')}); showToast(side+' tx sent: '+tx.hash.slice(0,10)+'...','info'); await tx.wait(); showToast(side+' '+amt+' USDT @ $'+price+' CONFIRMED '+tx.hash.slice(0,10),'success'); }catch(e){ showToast('Tx rejected: '+e.message.slice(0,80),'info'); }
-}
-function connectWalletConnect(){ const uri='wc:'+Math.random().toString(36).slice(2)+'@2?bridge=https://bridge.walletconnect.org&key='+Math.random().toString(36).slice(2); const qr=document.getElementById('wallet-qr'); if(qr) qr.classList.remove('hidden'); const img=document.getElementById('qr-img'); if(img) img.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(uri); showToast('Scan with Trust Wallet','info'); }
-function handleSignin(){ const e=document.getElementById('signin-email').value, p=document.getElementById('signin-pass').value; if(e==='admin@nexus.pro'&&p==='admin123'){ localStorage.setItem('nexus_user', JSON.stringify({email:e,role:'admin'})); switchNav('admin'); showToast('MDR Admin login','success'); return; } if(e&&p){ localStorage.setItem('nexus_user', JSON.stringify({email:e,role:'user'})); switchNav('trade'); showToast('Signed in','success'); } else showToast('Enter email/pass','info'); }
-function parseAI(){ const input=document.getElementById('ai-input').value.toLowerCase(); if(!input) return; const side=input.includes('short')?'SHORT':'LONG'; const lev=input.match(/(\d+)x/)?.[1]||'50'; const amt=input.match(/(\d+)\s*usdt/)?.[1]||'100'; document.getElementById('trade-amount').value=amt; const out=document.getElementById('ai-out'); out.classList.remove('hidden'); out.innerText='EXECUTING: '+side+' | '+lev+'x | $'+amt+' | Wallet: '+(userAddr?userAddr.slice(0,6)+'...':'Not connected'); setTimeout(()=>{ document.getElementById('ai-modal').classList.add('hidden'); executeTrade(side); },1200); }
-async function fetchHistory(sym='BTCUSDT'){ try{ const r=await fetch(API_BASE+'/api/history/'+sym); if(!r.ok) throw new Error(); const data=await r.json(); if(Array.isArray(data)&&data.length){ liveCandles=data.sort((a,b)=>a.timestamp-b.timestamp); const el=document.getElementById('ticker-price'); if(el) el.innerText='$'+liveCandles[liveCandles.length-1].close.toLocaleString(); drawChart(); } }catch(e){ const now=Date.now(); liveCandles=Array.from({length:80},(_,i)=>{const b=67284+Math.sin(i/8)*300; return {timestamp:now-(80-i)*60000,open:b,high:b+40,low:b-40,close:b+Math.random()*20-10,volume:20};}); drawChart(); } }
-function drawChart(){ const canvas=document.getElementById('chartCanvas'); if(!canvas||!liveCandles.length) return; const ctx=canvas.getContext('2d'); const rect=canvas.parentElement.getBoundingClientRect(); if(rect.width==0) return; const dpr=window.devicePixelRatio||1; canvas.width=rect.width*dpr; canvas.height=rect.height*dpr; ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr); const W=rect.width,H=rect.height; ctx.clearRect(0,0,W,H); const visibleCount=Math.max(20,Math.min(100,Math.floor(80/viewScale))); const start=Math.max(0,liveCandles.length-visibleCount-viewOffset); const visible=liveCandles.slice(start,start+visibleCount); let min=Math.min(...visible.map(c=>c.low)),max=Math.max(...visible.map(c=>c.high)); const pad=(max-min)*0.1||max*0.01; min-=pad; max+=pad; const range=max-min||1; ctx.strokeStyle='#1E2329'; for(let i=0;i<4;i++){const y=H*0.1+H*0.8*i/3; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();} const gap=W*0.9/visible.length; const candleW=Math.max(2,gap*0.6); visible.forEach((c,i)=>{const x=20+i*gap; const oY=H*0.9-((c.open-min)/range)*H*0.8; const cY=H*0.9-((c.close-min)/range)*H*0.8; const hY=H*0.9-((c.high-min)/range)*H*0.8; const lY=H*0.9-((c.low-min)/range)*H*0.8; const green=c.close>=c.open; ctx.fillStyle=green?'#0ECB81':'#F6465D'; ctx.strokeStyle=ctx.fillStyle; ctx.beginPath(); ctx.moveTo(x+candleW/2,hY); ctx.lineTo(x+candleW/2,lY); ctx.stroke(); const bh=Math.max(2,Math.abs(cY-oY)); ctx.fillRect(x,Math.min(oY,cY),candleW,bh);}); }
-window.addEventListener('load',()=>{ const saved=localStorage.getItem('nexus_wallet'); if(saved){ try{ const w=JSON.parse(saved); const wt=document.getElementById('wallet-text'); if(wt) wt.innerText=w.address.slice(0,4)+'...'+w.address.slice(-4); const wa=document.getElementById('wallet-addr'); if(wa) wa.innerText=w.address; const be=document.getElementById('bal-eth'); if(be) be.innerText=parseFloat(w.eth||0).toFixed(4)+' ETH'; const wn=document.getElementById('wallet-net'); if(wn) wn.innerText='Chain '+w.chainId+' • '+parseFloat(w.eth||0).toFixed(4)+' ETH'; userAddr=w.address; const wc=document.getElementById('wallet-connected'); if(wc) wc.classList.remove('hidden'); const wd=document.getElementById('wallet-disconnected'); if(wd) wd.classList.add('hidden'); }catch(e){} } const isAdminUrl=window.location.search.includes('admin=1'); if(isAdminUrl) switchNav('admin'); else switchNav('trade'); fetchHistory(); setInterval(async()=>{ try{ const r=await fetch(API_BASE+'/api/ticker'); const ticks=await r.json(); const btc=ticks.find(t=>t.symbol==='BTCUSDT'); if(btc&&liveCandles.length){ const last=liveCandles[liveCandles.length-1]; const p=parseFloat(btc.price); last.close=p; last.high=Math.max(last.high,p); last.low=Math.min(last.low,p); const el=document.getElementById('ticker-price'); if(el) el.innerText='$'+p.toLocaleString(); drawChart(); } }catch(e){} },3000); });
-window.addEventListener('resize',()=>setTimeout(drawChart,100));
-document.getElementById('wallet-modal').addEventListener('click',e=>{ if(e.target.id==='wallet-modal') closeWalletModal(); });
-document.getElementById('ai-modal').addEventListener('click',e=>{ if(e.target.id==='ai-modal') e.target.classList.add('hidden'); });
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDR TradeX - Enterprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b0e11; color: #eaebd1; font-family: sans-serif; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+    <!-- Header Navigation -->
+    <header class="flex justify-between items-center p-3 border-b border-gray-800 bg-[#12161c]">
+        <div class="flex items-center space-x-2">
+            <img src="mdr-icon.png" class="h-6 w-6" alt="Logo">
+            <span class="font-bold text-orange-500">MDR TradeX</span>
+        </div>
+        <button class="bg-orange-600 hover:bg-orange-500 px-3 py-1 text-xs rounded text-white font-semibold">
+            Connect Real Wallet
+        </button>
+    </header>
+
+    <!-- Main Chart Container -->
+    <main class="flex-1 relative w-full h-full bg-[#0b0e11] p-2">
+        <canvas id="chartCanvas" class="w-full h-full block"></canvas>
+    </main>
+
+    <!-- Live Candle Canvas Script -->
+    <script>
+        const canvas = document.getElementById('chartCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        async function fetchAndDrawCandles() {
+            try {
+                const res = await fetch('/api/ticker');
+                const tickers = await res.json();
+                const btc = tickers.find(t => t.symbol === 'BTCUSDT') || { price: 86400 };
+
+                // Draw background grid & candles
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw live price watermark
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+                ctx.font = 'bold 48px sans-serif';
+                ctx.fillText(`BTC $${btc.price}`, 30, 80);
+
+                // Sample candle rendering pipeline
+                const candleWidth = 8;
+                const spacing = 4;
+                const totalCandles = Math.floor(canvas.width / (candleWidth + spacing));
+                
+                let basePrice = btc.price;
+                for (let i = 0; i < totalCandles; i++) {
+                    const open = basePrice + (Math.sin(i * 0.2) * 50);
+                    const close = open + (Math.cos(i * 0.3) * 40);
+                    const high = Math.max(open, close) + Math.random() * 20;
+                    const low = Math.min(open, close) - Math.random() * 20;
+
+                    const x = i * (candleWidth + spacing);
+                    const isGreen = close >= open;
+
+                    // Normalize Y coordinates
+                    const minY = 100, maxY = canvas.height - 100;
+                    const scale = (val) => canvas.height - ((val - (btc.price - 300)) / 600) * (canvas.height - 200);
+
+                    // Draw Wick
+                    ctx.strokeStyle = isGreen ? '#0ecb81' : '#f6465d';
+                    ctx.beginPath();
+                    ctx.moveTo(x + candleWidth / 2, scale(high));
+                    ctx.lineTo(x + candleWidth / 2, scale(low));
+                    ctx.stroke();
+
+                    // Draw Body
+                    ctx.fillStyle = isGreen ? '#0ecb81' : '#f6465d';
+                    ctx.fillRect(x, scale(Math.max(open, close)), candleWidth, Math.max(2, Math.abs(scale(open) - scale(close))));
+                }
+            } catch (err) {
+                console.error("Failed to load candles:", err);
+            }
+        }
+
+        // Poll market data every 2 seconds
+        setInterval(fetchAndDrawCandles, 2000);
+        fetchAndDrawCandles();
+    </script>
+</body>
+</html>
