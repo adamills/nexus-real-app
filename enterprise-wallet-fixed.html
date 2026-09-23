@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nexus Pro - Real Wallet Fixed</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-[#0B0E11] text-white">
+<div id="wallet-panel" class="p-4">
+<button id="wallet-btn" onclick="connectMetaMask()" class="px-4 py-2 bg-[#E17726] rounded-xl font-bold">🦊 Connect Real Wallet</button>
+<div id="wallet-addr" class="mt-2 font-mono text-xs"></div>
+<div id="bal-eth" class="font-bold"></div>
+<button onclick="doTrade('LONG')" class="mt-4 h-12 w-full bg-[#0ECB81] text-black rounded-xl font-bold">Buy Long - Real TX</button>
+</div>
+<script>
+let provider, signer, userAddr=null;
+async function connectMetaMask(){
+  try{
+    if(!window.ethereum){
+      if(/Android|iPhone/i.test(navigator.userAgent)){
+        window.location.href='https://metamask.app.link/dapp/'+window.location.host+'/enterprise';
+        return;
+      }
+      alert('Install MetaMask from metamask.io'); return;
+    }
+    provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    await provider.send('eth_requestAccounts', []);
+    signer = provider.getSigner();
+    userAddr = await signer.getAddress();
+    const net = await provider.getNetwork();
+    const bal = await provider.getBalance(userAddr);
+    const eth = ethers.utils.formatEther(bal);
+    document.getElementById('wallet-addr').innerText = userAddr;
+    document.getElementById('bal-eth').innerText = eth + ' ETH Chain:' + net.chainId;
+    document.getElementById('wallet-btn').innerText = userAddr.slice(0,6)+'...'+userAddr.slice(-4);
+    localStorage.setItem('nexus_wallet', JSON.stringify({address:userAddr, eth:eth, chainId:net.chainId}));
+    window.ethereum.on('accountsChanged', a=>{ if(a.length==0) location.reload(); });
+    window.ethereum.on('chainChanged', ()=>location.reload());
+  }catch(e){ alert('Wallet error: '+e.message); }
+}
+async function doTrade(side){
+  if(!signer){ alert('Connect wallet first'); return; }
+  try{
+    const tx = await signer.sendTransaction({to:userAddr, value:ethers.utils.parseEther('0.0001')});
+    alert(side+' REAL TX sent: '+tx.hash+'\nWaiting confirmation...');
+    await tx.wait();
+    alert('Confirmed! '+tx.hash);
+  }catch(e){ alert('Rejected: '+e.message); }
+}
+// Auto-restore
+const saved=localStorage.getItem('nexus_wallet');
+if(saved){ try{ const w=JSON.parse(saved); document.getElementById('wallet-addr').innerText=w.address; document.getElementById('bal-eth').innerText=w.eth+' ETH'; document.getElementById('wallet-btn').innerText=w.address.slice(0,6)+'...'; userAddr=w.address; }catch(e){} }
+</script>
+</body>
+</html>
