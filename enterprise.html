@@ -6,30 +6,47 @@
     <title>MDR TradeX - Enterprise</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0b0e11; color: #eaebd1; font-family: sans-serif; }
+        body { background-color: #0b0e11; color: #eaebd1; font-family: system-ui, -apple-system, sans-serif; }
     </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
     <!-- Header Navigation -->
-    <header class="flex justify-between items-center p-3 border-b border-gray-800 bg-[#12161c]">
+    <header class="flex justify-between items-center px-4 py-2 border-b border-gray-800 bg-[#12161c] z-10">
         <div class="flex items-center space-x-2">
             <img src="mdr-icon.png" class="h-6 w-6" alt="Logo">
-            <span class="font-bold text-orange-500">MDR TradeX</span>
+            <span class="font-bold text-orange-500 tracking-wider">MDR TradeX</span>
         </div>
-        <button class="bg-orange-600 hover:bg-orange-500 px-3 py-1 text-xs rounded text-white font-semibold">
+        <button class="bg-orange-600 hover:bg-orange-500 px-3 py-1.5 text-xs font-semibold rounded text-white shadow">
             Connect Real Wallet
         </button>
     </header>
 
     <!-- Main Chart Container -->
-    <main class="flex-1 relative w-full h-full bg-[#0b0e11] p-2">
+    <main class="flex-1 relative w-full bg-[#0b0e11]">
         <canvas id="chartCanvas" class="w-full h-full block"></canvas>
     </main>
+
+    <!-- Bottom Trading Controls -->
+    <footer class="p-3 bg-[#12161c] border-t border-gray-800 flex flex-col gap-2">
+        <div class="flex justify-between items-center text-xs text-gray-400 px-1">
+            <span>Market Price: <strong id="livePrice" class="text-orange-400">Loading...</strong></span>
+            <span>Status: <span class="text-green-400">Connected</span></span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+            <button class="bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded text-sm transition">
+                BUY / LONG
+            </button>
+            <button class="bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded text-sm transition">
+                SELL / SHORT
+            </button>
+        </div>
+    </footer>
 
     <!-- Live Candle Canvas Script -->
     <script>
         const canvas = document.getElementById('chartCanvas');
         const ctx = canvas.getContext('2d');
+        const priceEl = document.getElementById('livePrice');
 
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
@@ -38,56 +55,59 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
+        let currentPrice = 86400;
+
         async function fetchAndDrawCandles() {
             try {
                 const res = await fetch('/api/ticker');
                 const tickers = await res.json();
-                const btc = tickers.find(t => t.symbol === 'BTCUSDT') || { price: 86400 };
+                const btc = tickers.find(t => t.symbol === 'BTCUSDT') || { price: currentPrice };
+                currentPrice = btc.price;
+                priceEl.innerText = `$${currentPrice.toFixed(2)}`;
 
-                // Draw background grid & candles
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 
                 // Draw live price watermark
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-                ctx.font = 'bold 48px sans-serif';
-                ctx.fillText(`BTC $${btc.price}`, 30, 80);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+                ctx.font = 'bold 28px sans-serif';
+                ctx.fillText(`BTC $${currentPrice.toFixed(2)}`, 20, 45);
 
-                // Sample candle rendering pipeline
-                const candleWidth = 8;
-                const spacing = 4;
+                const candleWidth = 7;
+                const spacing = 3;
                 const totalCandles = Math.floor(canvas.width / (candleWidth + spacing));
                 
-                let basePrice = btc.price;
+                const centerY = canvas.height / 2;
+                const amplitude = canvas.height * 0.25;
+
                 for (let i = 0; i < totalCandles; i++) {
-                    const open = basePrice + (Math.sin(i * 0.2) * 50);
-                    const close = open + (Math.cos(i * 0.3) * 40);
-                    const high = Math.max(open, close) + Math.random() * 20;
-                    const low = Math.min(open, close) - Math.random() * 20;
+                    const wave = Math.sin(i * 0.12) * amplitude;
+                    const openY = centerY + wave;
+                    const closeY = centerY + Math.sin((i + 1) * 0.12) * amplitude;
+                    
+                    const highY = Math.min(openY, closeY) - (Math.random() * 15 + 5);
+                    const lowY = Math.max(openY, closeY) + (Math.random() * 15 + 5);
 
                     const x = i * (candleWidth + spacing);
-                    const isGreen = close >= open;
+                    const isGreen = closeY < openY; // inverted Y axis for canvas
 
-                    // Normalize Y coordinates
-                    const minY = 100, maxY = canvas.height - 100;
-                    const scale = (val) => canvas.height - ((val - (btc.price - 300)) / 600) * (canvas.height - 200);
-
-                    // Draw Wick
+                    // Wick
                     ctx.strokeStyle = isGreen ? '#0ecb81' : '#f6465d';
+                    ctx.lineWidth = 1;
                     ctx.beginPath();
-                    ctx.moveTo(x + candleWidth / 2, scale(high));
-                    ctx.lineTo(x + candleWidth / 2, scale(low));
+                    ctx.moveTo(x + candleWidth / 2, highY);
+                    ctx.lineTo(x + candleWidth / 2, lowY);
                     ctx.stroke();
 
-                    // Draw Body
+                    // Body
                     ctx.fillStyle = isGreen ? '#0ecb81' : '#f6465d';
-                    ctx.fillRect(x, scale(Math.max(open, close)), candleWidth, Math.max(2, Math.abs(scale(open) - scale(close))));
+                    const bodyHeight = Math.max(2, Math.abs(openY - closeY));
+                    ctx.fillRect(x, Math.min(openY, closeY), candleWidth, bodyHeight);
                 }
             } catch (err) {
                 console.error("Failed to load candles:", err);
             }
         }
 
-        // Poll market data every 2 seconds
         setInterval(fetchAndDrawCandles, 2000);
         fetchAndDrawCandles();
     </script>
