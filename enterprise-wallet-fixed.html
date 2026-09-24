@@ -1,58 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nexus Pro - Real Wallet Fixed</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Nexus Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <style>
+    :root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#000;color:#f7f7f8;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit}button:focus-visible{outline:2px solid #8d8dff;outline-offset:3px}.safe-top{padding-top:max(12px,env(safe-area-inset-top))}.safe-bottom{padding-bottom:max(12px,env(safe-area-inset-bottom))}.muted{color:#a4a4aa}.divider{border-color:#29292e}.surface{background:#19191c}.pill{background:#25252a;color:#b8b8bf;border-radius:9px;padding:3px 8px;font-size:14px}.app{max-width:760px;margin:auto;min-height:100svh;padding:0 32px 104px}.topbar{height:68px;display:flex;align-items:center;justify-content:space-between}.icon-btn{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:#eee}.icon-btn:hover{background:#19191c}.section{padding:28px 0;border-bottom:1px solid #29292e}.section-title{display:flex;align-items:center;gap:8px;font-size:30px;font-weight:750;letter-spacing:-.04em;margin-bottom:22px}.hero{border-radius:28px;background:linear-gradient(135deg,#ff986e,#ffa77e 52%,#ffb18d);height:210px;display:grid;place-items:center;overflow:hidden}.wallet-art{font-size:92px;filter:drop-shadow(0 16px 10px #bf5e3d)}.token-row{display:flex;align-items:center;gap:16px;padding:13px 0}.token-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:21px;background:#536de8}.token-meta{flex:1;min-width:0}.token-name{font-size:22px;font-weight:650}.token-price{font-size:17px;color:#a4a4aa}.negative{color:#ff7188}.positive{color:#b5f13e}.buy{background:#1b1b1f;border:0;border-radius:16px;padding:12px 20px;font-weight:700}.cards{display:flex;gap:20px;overflow-x:auto;margin:0 -32px;padding:0 32px 8px;scrollbar-width:none}.cards::-webkit-scrollbar{display:none}.perp-card{flex:0 0 280px;height:210px;border-radius:24px;background:#19191c;padding:24px;position:relative;overflow:hidden}.spark{position:absolute;left:24px;right:20px;bottom:22px;width:calc(100% - 44px);height:72px}.list-row{display:flex;align-items:center;gap:16px;padding:15px 0}.list-row .copy{flex:1;min-width:0}.list-row h3{margin:0;font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.list-row p{margin:5px 0 0;font-size:17px;color:#a4a4aa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bottom-nav{position:fixed;z-index:10;bottom:0;left:50%;transform:translateX(-50%);width:min(760px,100%);height:86px;background:rgba(0,0,0,.95);border-top:1px solid #29292e;display:flex;align-items:center;justify-content:space-around}.nav-item{color:#a4a4aa;text-align:center;font-size:15px}.nav-item.active{color:#fff}.trade-fab{width:72px;height:72px;border-radius:50%;background:#4b5cff;color:#fff;font-size:42px;line-height:1}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:20;display:none;align-items:flex-end}.overlay.open{display:flex}.sheet{width:min(760px,100%);margin:auto 0 0;background:#111113;border:1px solid #35353b;border-bottom:0;border-radius:28px 28px 0 0;padding:24px 32px max(28px,env(safe-area-inset-bottom));box-shadow:0 -20px 70px #000}.sheet-item{display:flex;gap:20px;align-items:flex-start;padding:17px 0}.sheet-icon{width:36px;text-align:center;font-size:28px}.close{float:right;color:#a4a4aa}.notification{display:none}.notification.active{display:block}.back{display:none}.notification .topbar{justify-content:flex-start;gap:15px}.notification .back{display:grid}.switch{width:62px;height:36px;background:#7f83ff;border-radius:22px;padding:4px}.switch:after{content:"";display:block;width:28px;height:28px;background:#fff;border-radius:50%;margin-left:24px}.setting-row{display:flex;align-items:center;gap:22px;padding:16px 0}.setting-row.disabled{opacity:.18}.setting-row .copy{flex:1}.setting-row h3{font-size:22px;margin:0}.setting-row p{margin:5px 0 0;font-size:17px;color:#a4a4aa}.chevron{font-size:35px;color:#aaa}@media(max-width:520px){.app{padding-left:32px;padding-right:32px}.section-title{font-size:29px}.hero{height:190px}.topbar{height:72px}.token-name{font-size:20px}.perp-card{flex-basis:280px}.sheet{padding-left:32px;padding-right:32px}}
+  </style>
 </head>
-<body class="bg-[#0B0E11] text-white">
-<div id="wallet-panel" class="p-4">
-<button id="wallet-btn" onclick="connectMetaMask()" class="px-4 py-2 bg-[#E17726] rounded-xl font-bold">🦊 Connect Real Wallet</button>
-<div id="wallet-addr" class="mt-2 font-mono text-xs"></div>
-<div id="bal-eth" class="font-bold"></div>
-<button onclick="doTrade('LONG')" class="mt-4 h-12 w-full bg-[#0ECB81] text-black rounded-xl font-bold">Buy Long - Real TX</button>
-</div>
+<body>
+  <main class="app safe-top" id="homeView">
+    <header class="topbar">
+      <button class="icon-btn" aria-label="Account">☰</button>
+      <strong style="font-size:24px">Nexus</strong>
+      <button class="icon-btn" aria-label="Notifications" onclick="showNotifications()">♧</button>
+    </header>
+    <section class="section" style="padding-top:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><div><div class="muted" style="font-size:16px">Portfolio balance</div><div style="font-size:36px;font-weight:800;letter-spacing:-.05em">$84,750.32</div></div><button id="wallet-btn" class="buy" style="background:#4b5cff;color:#fff" onclick="connectMetaMask()">Connect</button></div>
+      <div id="wallet-status" class="muted" style="font-size:13px;margin-top:8px;min-height:18px"></div>
+    </section>
+    <section class="section"><div class="hero"><div class="wallet-art">👛</div></div><h1 style="font-size:40px;line-height:1.05;letter-spacing:-.06em;margin:25px 0 10px">Fund your wallet</h1><p class="muted" style="font-size:23px;line-height:1.45;margin:0 0 26px">Add funds to start trading securely.</p><button class="buy" style="width:100%;background:#fff;color:#111;font-size:22px" onclick="alert('Funding flow is ready to connect to your approved on-ramp.')">Add funds</button></section>
+    <section class="section"><h2 class="section-title">Tokens <span class="muted">›</span></h2><div id="tokens"></div></section>
+    <section class="section"><h2 class="section-title">Perps <span class="muted">›</span></h2><div class="cards"><div class="perp-card"><div style="font-size:25px;font-weight:700">BTC <span class="pill">40x</span></div><div class="negative" style="font-size:20px;margin-top:7px">−2.14%</div><svg class="spark" viewBox="0 0 250 80" preserveAspectRatio="none"><path d="M0 22 C20 50 40 20 55 28 S75 5 92 40 S120 35 138 55 S155 40 170 72 S190 56 208 64 S230 45 250 55" fill="none" stroke="#ff7188" stroke-width="4"/></svg></div><div class="perp-card"><div style="font-size:25px;font-weight:700">ETH <span class="pill">25x</span></div><div class="negative" style="font-size:20px;margin-top:7px">−2.55%</div><svg class="spark" viewBox="0 0 250 80" preserveAspectRatio="none"><path d="M0 20 C30 50 45 12 64 25 S90 55 115 53 S145 35 165 70 S200 45 220 63 S238 52 250 58" fill="none" stroke="#ff7188" stroke-width="4"/></svg></div></div></section>
+    <section class="section"><h2 class="section-title">Predictions <span class="muted">›</span></h2><div class="list-row"><div class="token-icon" style="background:#202024">🏆</div><div class="copy"><h3>Pro Football: 2027 Championship</h3><p>13% chance on Los Angeles</p></div><span class="chevron">›</span></div><div class="list-row"><div class="token-icon" style="background:#202024">₿</div><div class="copy"><h3>BTC Price: $80,000</h3><p>Price to beat: $80,000</p></div><span class="chevron">›</span></div></section>
+    <section class="section"><h2 class="section-title">Watchlist <span class="muted">›</span></h2><div class="list-row"><div class="token-icon">◆</div><div class="copy"><h3>Ether</h3><p>$328B cap • $18B vol</p></div><div style="text-align:right;font-size:20px">$2,684.82<div class="negative">−2.61%</div></div></div></section>
+  </main>
+  <section class="app notification safe-top" id="notificationView"><header class="topbar"><button class="icon-btn back" onclick="hideNotifications()">‹</button><h1 style="font-size:40px;margin:0;letter-spacing:-.06em">Notifications</h1></header><p class="muted" style="font-size:22px;margin:5px 0 42px">Choose what you're notified about and how.</p><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px"><strong style="font-size:22px">Allow notifications</strong><div class="switch" role="switch" aria-checked="true"></div></div><div id="settings"></div></section>
+  <nav class="bottom-nav safe-bottom"><button class="nav-item active" onclick="hideNotifications()">⌂<br>Home</button><button class="nav-item">⌁<br>Explore</button><button class="trade-fab" onclick="openSheet()">+</button><button class="nav-item">＄<br>Money</button><button class="nav-item">♢<br>Rewards</button></nav>
+  <div class="overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()"><div class="sheet"><button class="close" onclick="closeSheet()">✕</button><div class="sheet-item"><div class="sheet-icon">↘</div><div><strong style="font-size:25px">Batch Sell</strong> <span class="pill" style="color:#a5a9ff">New</span><p class="muted" style="font-size:21px;margin:4px 0">Sell up to 5 tokens for a stablecoin</p></div></div><div class="sheet-item"><div class="sheet-icon">↕</div><div><strong style="font-size:25px">Swap</strong><p class="muted" style="font-size:21px;margin:4px 0">Exchange between tokens</p></div></div><div class="sheet-item"><div class="sheet-icon">⚙</div><div><strong style="font-size:25px">Perps</strong> <span class="pill">Lite</span><p class="muted" style="font-size:21px;margin:4px 0">Trade perps contracts</p></div></div><div class="sheet-item"><div class="sheet-icon">◒</div><div><strong style="font-size:25px">Predictions</strong><p class="muted" style="font-size:21px;margin:4px 0">Trade on real-world events</p></div></div><div class="sheet-item"><div class="sheet-icon">♧</div><div><strong style="font-size:25px">Earn</strong><p class="muted" style="font-size:21px;margin:4px 0">Put your crypto to work</p></div></div></div></div>
 <script>
-let provider, signer, userAddr=null;
-async function connectMetaMask(){
-  try{
-    if(!window.ethereum){
-      if(/Android|iPhone/i.test(navigator.userAgent)){
-        window.location.href='https://metamask.app.link/dapp/'+window.location.host+'/enterprise';
-        return;
-      }
-      alert('Install MetaMask from metamask.io'); return;
-    }
-    provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
-    await provider.send('eth_requestAccounts', []);
-    signer = provider.getSigner();
-    userAddr = await signer.getAddress();
-    const net = await provider.getNetwork();
-    const bal = await provider.getBalance(userAddr);
-    const eth = ethers.utils.formatEther(bal);
-    document.getElementById('wallet-addr').innerText = userAddr;
-    document.getElementById('bal-eth').innerText = eth + ' ETH Chain:' + net.chainId;
-    document.getElementById('wallet-btn').innerText = userAddr.slice(0,6)+'...'+userAddr.slice(-4);
-    localStorage.setItem('nexus_wallet', JSON.stringify({address:userAddr, eth:eth, chainId:net.chainId}));
-    window.ethereum.on('accountsChanged', a=>{ if(a.length==0) location.reload(); });
-    window.ethereum.on('chainChanged', ()=>location.reload());
-  }catch(e){ alert('Wallet error: '+e.message); }
-}
-async function doTrade(side){
-  if(!signer){ alert('Connect wallet first'); return; }
-  try{
-    const tx = await signer.sendTransaction({to:userAddr, value:ethers.utils.parseEther('0.0001')});
-    alert(side+' REAL TX sent: '+tx.hash+'\nWaiting confirmation...');
-    await tx.wait();
-    alert('Confirmed! '+tx.hash);
-  }catch(e){ alert('Rejected: '+e.message); }
-}
-// Auto-restore
-const saved=localStorage.getItem('nexus_wallet');
-if(saved){ try{ const w=JSON.parse(saved); document.getElementById('wallet-addr').innerText=w.address; document.getElementById('bal-eth').innerText=w.eth+' ETH'; document.getElementById('wallet-btn').innerText=w.address.slice(0,6)+'...'; userAddr=w.address; }catch(e){} }
-</script>
-</body>
-</html>
+let provider,signer,userAddr;const tokens=[['M','MetaMask USD','$1.00','−0.01%','#cadbff'],['◆','Ethereum','$2,684.82','−2.61%','#637ce9'],['₿','Bitcoin','$84,468.59','−2.05%','#f7931a'],['≋','Solana','$114.98','−3.01%','#35c6b0'],['◆','BNB','$765.97','−2.91%','#f0b90b']];
+document.getElementById('tokens').innerHTML=tokens.map(t=>`<div class="token-row"><div class="token-icon" style="background:${t[4]};color:#111">${t[0]}</div><div class="token-meta"><div class="token-name">${t[1]}</div><div class="token-price">${t[2]} • <span class="negative">${t[3]}</span></div></div><button class="buy">Buy</button></div>`).join('');
+const settings=['Wallet activity','Trading activity','Trading signals','Agent wallet','Updates and rewards','Price alerts'];document.getElementById('settings').innerHTML=settings.map((s,i)=>`<div class="setting-row ${i===0?'disabled':''}"><div style="font-size:28px;width:36px;text-align:center">${['◷','⚙','ϟ','‹›','⚑','♧'][i]}</div><div class="copy"><h3>${s}</h3><p>Push, In app</p></div><span class="chevron">›</span></div>`).join('');
+function showNotifications(){homeView.style.display='none';notificationView.classList.add('active')}function hideNotifications(){homeView.style.display='block';notificationView.classList.remove('active')}function openSheet(){sheetOverlay.classList.add('open')}function closeSheet(){sheetOverlay.classList.remove('open')}
+async function connectMetaMask(){if(!window.ethereum){walletStatus.textContent='Install MetaMask to connect a wallet.';return}try{provider=new ethers.providers.Web3Provider(window.ethereum,'any');await provider.send('eth_requestAccounts',[]);signer=provider.getSigner();userAddr=await signer.getAddress();walletStatus.textContent=`Connected: ${userAddr.slice(0,6)}…${userAddr.slice(-4)}`;walletBtn.textContent='Connected';}catch(e){walletStatus.textContent='Connection cancelled.'}}
+</script></body></html>
